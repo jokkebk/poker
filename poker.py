@@ -76,7 +76,7 @@ def rank(h):
     0x1xxxxxx: One pair
     0x0xxxxxx: Nothing special
     """
-    mask = 0
-    for v in h: mask |= 1<<(v&15)
-    # Upgrade straight to 9 and normal to 5
-    return RANK[hand2value(h)] + (0 if (mask&(mask-1)) else UNIT(5, 0))
+    val = RANK[hand2value(h)]
+    for v in h:
+        if (v^h[0])&15: return val
+    return val + UNIT(5, 0) # Upgrade straight to 9 and normal to 5
