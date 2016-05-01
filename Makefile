@@ -3,7 +3,7 @@ CFLAGS=--std=c++11 -O3 -D__NO_INLINE__
 
 all: odds
 
-run:
+run: odds
 	./odds
 
 odds: odds.o poker.o

@@ -89,11 +89,16 @@ void init_rank() {
 }
 
 int rank_hand(const vector<int> & h) {
-    int val = value_rank[get_offset(h)];
-    int s = h[0]&0xF0;
-    for(int i=1; i<5; i++)
-        if((h[i]&0xF0) != s) return val;
-    return MAKE_RANK(5, 0, val); // Upgrade straight to 9 and normal to 5
+    int offset = (h[0]&15) + ((h[1]&15)<<4) +
+        ((h[2]&15)<<8) + ((h[3]&15)<<12) + ((h[4]&15)<<16);
+    int val = value_rank[offset];
+    return (h[0]&h[1]&h[2]&h[3]&h[4]&0xF0) ? MAKE_RANK(5, 0, val) : val;
+}
+
+int rank_hand(int c1, int c2, int c3, int c4, int c5) {
+    int val = value_rank[(c1&15) + ((c2&15)<<4) +
+        ((c3&15)<<8) + ((c4&15)<<12) + ((c5&15)<<16)];
+    return (c1&c2&c3&c4&c5&0xF0) ? MAKE_RANK(5, 0, val) : val;
 }
 
 vector<int> make_deck() {
