@@ -101,6 +101,54 @@ int rank_hand(int c1, int c2, int c3, int c4, int c5) {
     return (c1&c2&c3&c4&c5&0xF0) ? MAKE_RANK(5, 0, val) : val;
 }
 
+int rank_hand7(const std::vector<int> & h) {
+    int best = rank_hand(h[0], h[1], h[2], h[3], h[4]);
+    best = max(best, rank_hand(h[0], h[1], h[2], h[3], h[5]));
+    best = max(best, rank_hand(h[0], h[1], h[2], h[3], h[6]));
+    best = max(best, rank_hand(h[0], h[1], h[2], h[4], h[5]));
+    best = max(best, rank_hand(h[0], h[1], h[2], h[4], h[6]));
+    best = max(best, rank_hand(h[0], h[1], h[2], h[5], h[6]));
+    best = max(best, rank_hand(h[0], h[1], h[3], h[4], h[5]));
+    best = max(best, rank_hand(h[0], h[1], h[3], h[4], h[6]));
+    best = max(best, rank_hand(h[0], h[1], h[3], h[5], h[6]));
+    best = max(best, rank_hand(h[0], h[1], h[4], h[5], h[6]));
+    best = max(best, rank_hand(h[0], h[2], h[3], h[4], h[5]));
+    best = max(best, rank_hand(h[0], h[2], h[3], h[4], h[6]));
+    best = max(best, rank_hand(h[0], h[2], h[3], h[5], h[6]));
+    best = max(best, rank_hand(h[0], h[2], h[4], h[5], h[6]));
+    best = max(best, rank_hand(h[0], h[3], h[4], h[5], h[6]));
+    best = max(best, rank_hand(h[1], h[2], h[3], h[4], h[5]));
+    best = max(best, rank_hand(h[1], h[2], h[3], h[4], h[6]));
+    best = max(best, rank_hand(h[1], h[2], h[3], h[5], h[6]));
+    best = max(best, rank_hand(h[1], h[2], h[4], h[5], h[6]));
+    best = max(best, rank_hand(h[1], h[3], h[4], h[5], h[6]));
+    return max(best, rank_hand(h[2], h[3], h[4], h[5], h[6]));
+}
+
+int rank_hand7(int c1, int c2, int c3, int c4, int c5, int c6, int c7) {
+    int best = rank_hand(c1, c2, c3, c4, c5);
+    best = max(best, (c1, c2, c3, c4, c6));
+    best = max(best, (c1, c2, c3, c4, c7));
+    best = max(best, (c1, c2, c3, c5, c6));
+    best = max(best, (c1, c2, c3, c5, c7));
+    best = max(best, (c1, c2, c3, c6, c7));
+    best = max(best, (c1, c2, c4, c5, c6));
+    best = max(best, (c1, c2, c4, c5, c7));
+    best = max(best, (c1, c2, c4, c6, c7));
+    best = max(best, (c1, c2, c5, c6, c7));
+    best = max(best, (c1, c3, c4, c5, c6));
+    best = max(best, (c1, c3, c4, c5, c7));
+    best = max(best, (c1, c3, c4, c6, c7));
+    best = max(best, (c1, c3, c5, c6, c7));
+    best = max(best, (c1, c4, c5, c6, c7));
+    best = max(best, (c2, c3, c4, c5, c6));
+    best = max(best, (c2, c3, c4, c5, c7));
+    best = max(best, (c2, c3, c4, c6, c7));
+    best = max(best, (c2, c3, c5, c6, c7));
+    best = max(best, (c2, c4, c5, c6, c7));
+    return max(best, (c3, c4, c5, c6, c7));
+}
+
 vector<int> make_deck() {
     vector<int> deck(52);
     for(int i=0; i<52; i++)

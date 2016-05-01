@@ -32,15 +32,4 @@ int main() {
     }
 
     return 0;
-
-    while(true) {
-        vector<int> h(5);
-        cout << "Input 5 cards";
-        for(int i=0; i<5; i++)
-            cin >> hex >> h[i];
-        for(int v : h) cout << v << " "; cout << endl;
-        cout << hex << rank_hand(h) << endl;
-    }
-
-    return 0;
 }

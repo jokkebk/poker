@@ -6,6 +6,12 @@ all: odds
 run: odds
 	./odds
 
+hand: hand.o poker.o
+	${CC} ${CFLAGS} $^ -s -o $@
+ 	
+%.o: %.cc
+	$(CC) $(CFLAGS) -c $< -o $@
+
 odds: odds.o poker.o
 	${CC} ${CFLAGS} $^ -s -o $@
  	
