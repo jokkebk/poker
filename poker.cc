@@ -1,9 +1,4 @@
-#include <iostream>
-#include <map>
-#include <vector>
-#include <algorithm>
-#include <cstdlib>
-#include <ctime>
+#include "poker.h"
 
 using namespace std;
 
@@ -101,48 +96,15 @@ int rank_hand(const vector<int> & h) {
     return MAKE_RANK(5, 0, val); // Upgrade straight to 9 and normal to 5
 }
 
-int shuffle(vector<int> & deck, int n) {
+vector<int> make_deck() {
+    vector<int> deck(52);
+    for(int i=0; i<52; i++)
+        deck[i] = (0x10 << (i&3)) + i/4+2;
+    return deck;
+}
+
+int shuffle_deck(vector<int> & deck, int n) {
     for(int i=0; i<n; i++)
         swap(deck[i], deck[i+rand()%(52-i)]);
 }
 
-int main() {
-    vector<int> deck(52);
-    clock_t start, end;
-
-    start = clock();
-    init_rank();
-    end = clock();
-
-    cout << "Init took " << (double)(end-start)/CLOCKS_PER_SEC << " seconds" << endl;
-
-    for(int i=0; i<52; i++)
-        deck[i] = (0x10 << (i&3)) + i/4+2;
-
-    vector<int> cnt(10);
-    start = clock();
-    int N = 100000000;
-    for(int i = 0; i < N; i++) {
-        shuffle(deck, 5);
-        cnt[rank_hand(deck)>>24]++;
-    }
-    end = clock();
-    cout << (double)(end-start)/CLOCKS_PER_SEC << " seconds" << endl;
-
-    for(int i = 0; i < 10; i++) {
-        cout << 100.0*cnt[i]/N << endl;
-    }
-
-    return 0;
-
-    while(true) {
-        vector<int> h(5);
-        cout << "Input 5 cards";
-        for(int i=0; i<5; i++)
-            cin >> hex >> h[i];
-        for(int v : h) cout << v << " "; cout << endl;
-        cout << hex << rank_hand(h) << endl;
-    }
-
-    return 0;
-}
