@@ -13,17 +13,3 @@ odds: odds.o poker.o
 	$(CC) $(CFLAGS) -c $< -o $@
 
 poker.o: poker.h
-# %.flash: %.hex
-# 	$(DUDE) $(DUDEFLAGS) -U flash:w:$*.hex
-# 	
-# %.hex: %.elf
-# 	$(OBJCOPY) $(OBJFLAGS) $< $@
-# 	
-# %.elf: %.o
-# 	$(CC) $(CFLAGS) $< -o $@
-# 	
-# %.o: %.S	
-# 	$(CC) $(CFLAGS) -c $< -o $@
-# 
-# poker.o: pokerlib.c arrays.h
-# 	${CC} -c ${CFLAGS} pokerlib.c -o pokerlib.o
