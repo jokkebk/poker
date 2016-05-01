@@ -98,6 +98,7 @@ int rank_hand(const vector<int> & h) {
 int rank_hand(int c1, int c2, int c3, int c4, int c5) {
     int val = value_rank[(c1&15) + ((c2&15)<<4) +
         ((c3&15)<<8) + ((c4&15)<<12) + ((c5&15)<<16)];
+    //cout << "rank_hand(" << c1 << ", " << c2 << ", " << c3 << ", " << c4 << ", " << c5 << ") = " << val << endl;
     return (c1&c2&c3&c4&c5&0xF0) ? MAKE_RANK(5, 0, val) : val;
 }
 
@@ -127,26 +128,28 @@ int rank_hand7(const std::vector<int> & h) {
 
 int rank_hand7(int c1, int c2, int c3, int c4, int c5, int c6, int c7) {
     int best = rank_hand(c1, c2, c3, c4, c5);
-    best = max(best, (c1, c2, c3, c4, c6));
-    best = max(best, (c1, c2, c3, c4, c7));
-    best = max(best, (c1, c2, c3, c5, c6));
-    best = max(best, (c1, c2, c3, c5, c7));
-    best = max(best, (c1, c2, c3, c6, c7));
-    best = max(best, (c1, c2, c4, c5, c6));
-    best = max(best, (c1, c2, c4, c5, c7));
-    best = max(best, (c1, c2, c4, c6, c7));
-    best = max(best, (c1, c2, c5, c6, c7));
-    best = max(best, (c1, c3, c4, c5, c6));
-    best = max(best, (c1, c3, c4, c5, c7));
-    best = max(best, (c1, c3, c4, c6, c7));
-    best = max(best, (c1, c3, c5, c6, c7));
-    best = max(best, (c1, c4, c5, c6, c7));
-    best = max(best, (c2, c3, c4, c5, c6));
-    best = max(best, (c2, c3, c4, c5, c7));
-    best = max(best, (c2, c3, c4, c6, c7));
-    best = max(best, (c2, c3, c5, c6, c7));
-    best = max(best, (c2, c4, c5, c6, c7));
-    return max(best, (c3, c4, c5, c6, c7));
+    best = max(best, rank_hand(c1, c2, c3, c4, c6));
+    best = max(best, rank_hand(c1, c2, c3, c4, c7));
+    best = max(best, rank_hand(c1, c2, c3, c5, c6));
+    best = max(best, rank_hand(c1, c2, c3, c5, c7));
+    best = max(best, rank_hand(c1, c2, c3, c6, c7));
+    best = max(best, rank_hand(c1, c2, c4, c5, c6));
+    best = max(best, rank_hand(c1, c2, c4, c5, c7));
+    best = max(best, rank_hand(c1, c2, c4, c6, c7));
+    best = max(best, rank_hand(c1, c2, c5, c6, c7));
+    best = max(best, rank_hand(c1, c3, c4, c5, c6));
+    best = max(best, rank_hand(c1, c3, c4, c5, c7));
+    best = max(best, rank_hand(c1, c3, c4, c6, c7));
+    best = max(best, rank_hand(c1, c3, c5, c6, c7));
+    best = max(best, rank_hand(c1, c4, c5, c6, c7));
+    best = max(best, rank_hand(c2, c3, c4, c5, c6));
+    best = max(best, rank_hand(c2, c3, c4, c5, c7));
+    best = max(best, rank_hand(c2, c3, c4, c6, c7));
+    best = max(best, rank_hand(c2, c3, c5, c6, c7));
+    best = max(best, rank_hand(c2, c4, c5, c6, c7));
+    best = max(best, rank_hand(c3, c4, c5, c6, c7));
+    //cout << "rank_hand7(" << c1 << ", " << c2 << ", " << c3 << ", " << c4 << ", " << c5 << ", " << c6 << ", " << c7 << ") = " << best << endl;
+    return best;
 }
 
 vector<int> make_deck() {
@@ -156,8 +159,12 @@ vector<int> make_deck() {
     return deck;
 }
 
-int shuffle_deck(vector<int> & deck, int n) {
-    for(int i=0; i<n; i++)
+int shuffle_deck(vector<int> & deck, int n, int off /*=0*/) {
+    for(int i=off; i<off+n; i++)
         swap(deck[i], deck[i+rand()%(52-i)]);
 }
 
+int make_card(string vs) {
+    static string values = "__23456789TJQKA", suits = "SDHC";
+    return (0x10 << suits.find(toupper(vs[1]))) + values.find(toupper(vs[0]));
+}

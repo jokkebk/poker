@@ -1,10 +1,10 @@
 CC=g++
 CFLAGS=--std=c++11 -O3 -D__NO_INLINE__
 
-all: odds
+all: odds hand
 
-run: odds
-	./odds
+run: hand
+	./$<
 
 hand: hand.o poker.o
 	${CC} ${CFLAGS} $^ -s -o $@
