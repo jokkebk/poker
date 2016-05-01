@@ -7,7 +7,7 @@ init_rank()
 end = time.clock()
 print('Init took', '%.3f' % (end-start), 'seconds')
 
-s, N, step = [0]*10, 0, 100000
+s, N, step = [0]*10, 0, 1000000
 deck = list(v*16+s for v, s in product(range(2,15), range(4)))
 while True:
     start = time.clock()
