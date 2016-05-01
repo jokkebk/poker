@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -30,31 +31,28 @@ pair<int,int> simulate(vector<int> & deck, int dealt, int opps, int N) {
 }
 
 int main(int argc, char *argv[]) {
-    int N=1000000;
+    int N=1000000, cards;
 
     int opps = (argc > 1) ? argv[1][0]-'0' : 5;
 
     init_rank();
 
-    while(true) {
+    cout << "Running simulations with " << opps << " opponents" << endl;
+    cout << "Input first 2 player cards (e.g. 'kh 9s'), then community cards:" << endl;
+
+    do {
         vector<int> deck = make_deck();
+        string input, vs;
+        getline(cin, input);
+        istringstream iss(input);
 
-        cout << "Running simulations with " << opps << " opponents" << endl;
-        cout << "Input first 2 player cards (e.g. 'kh 9s'), then community cards: ";
+        for(cards=0; iss >> vs; cards++)
+            iter_swap(deck.begin()+cards, find(deck.begin(), deck.end(), make_card(vs)));
 
-        for(int i=0; i<7; i++) {
-            string vs;
-            cin >> vs;
-            iter_swap(deck.begin()+i, find(deck.begin(), deck.end(), make_card(vs)));
-
-            // don't simulate on 1st card and community cards 1-2
-            if(i<4 && i!=1) continue;
-
-            cout << "Simulating " << N << " times..." << endl;
-            pair<int,int> wintie = simulate(deck, i-1, opps, N);
-            cout << "Win rate " << (100.0*wintie.first/N) << " %, tie " << (100.0*wintie.second/N) << " %" << endl;
-        }
-    }
+        cout << "Simulating " << N << " times..." << endl;
+        pair<int,int> wintie = simulate(deck, cards-2, opps, N);
+        cout << "Win rate " << (100.0*wintie.first/N) << " %, tie " << (100.0*wintie.second/N) << " %" << endl;
+    } while(cards);
 
     return 0;
 }
