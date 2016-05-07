@@ -20,4 +20,6 @@ int shuffle_deck(std::vector<int> & deck, int n, int off=0);
 
 int make_card(std::string vs);
 
+std::pair<int,int> simulate(std::vector<int> & deck, int dealt, int opps, int N);
+
 #endif

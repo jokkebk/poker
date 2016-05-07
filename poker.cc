@@ -168,3 +168,25 @@ int make_card(string vs) {
     static string values = "__23456789TJQKA", suits = "SDHC";
     return (0x10 << suits.find(toupper(vs[1]))) + values.find(toupper(vs[0]));
 }
+
+pair<int,int> simulate(vector<int> & deck, int dealt, int opps, int N) {
+    int win = 0, tie = 0;
+
+    for(int i=0; i<N; i++) {
+        // deal remaining cards for table and opponents
+        shuffle_deck(deck, 5-dealt+opps*2, 2+dealt);
+
+        int myrank = rank_hand7(deck), opprank = 0;
+        for(int opp=0; opp<opps; opp++) {
+            opprank = max(opprank, rank_hand7(deck[2], deck[3],
+                        deck[4], deck[5], deck[6],
+                        deck[7+opp*2], deck[8+opp*2]));
+            if(opprank > myrank) break;
+        }
+
+        if(myrank > opprank) win++;
+        else if(myrank == opprank) tie++;
+    }
+
+    return make_pair(win, tie);
+}
